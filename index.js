@@ -5,8 +5,11 @@ import authRouter from './routes/authRoute.js';
 import personRouter from './routes/personRoute.js'
 
 const app = express()
+
+const APP_URL = 'https://ceylon-tea-client.vercel.app/'
+
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: APP_URL,
   credentials: true
 }));
 
