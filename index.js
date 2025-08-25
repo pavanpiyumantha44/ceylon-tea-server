@@ -9,7 +9,7 @@ import teamsRouter from './routes/teamRoute.js'
 const app = express()
 
 // const APP_URL = 'http://localhost:5173'
-const APP_URL = 'https://vercel.com/chipher-corders-projects/ceylon-tea-client'
+const APP_URL = 'https://ceylon-tea-client.vercel.app/'
 
 app.use(cors({
   origin: APP_URL,
