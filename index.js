@@ -8,11 +8,11 @@ import teamsRouter from './routes/teamRoute.js'
 
 const app = express()
 
-// const APP_URL = 'http://localhost:5173'
-const APP_URL = 'https://ceylon-tea-client.vercel.app/'
+const APP_URL = process.env.APP_URL
+//const APP_URL = 'https://ceylon-tea-client.vercel.app/'
 
 app.use(cors({
-  origin: 'https://ceylon-tea-client.vercel.app',
+  origin: APP_URL,
   credentials: true,
   methods:['POST','GET','PUT','DELETE']
 }));
