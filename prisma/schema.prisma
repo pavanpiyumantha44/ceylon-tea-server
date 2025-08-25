@@ -74,8 +74,9 @@ model Account{
 
 model Attendance {
   attendanceId String   @id @default(uuid()) @map("attendance_id")
-  date      DateTime
-  status    String
+  start_dattm      DateTime?
+  end_dttm    DateTime?
+  status    AttendanceStatus
   personId String
   isDeleted String @default("N") @map("is_deleted")
   createdAt DateTime? @default(now()) @map("created_at")
@@ -83,6 +84,12 @@ model Attendance {
   
   person    Person   @relation(fields: [personId], references: [personId])
   @@map("attendance")
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LEAVE
 }
 
 model Salary {

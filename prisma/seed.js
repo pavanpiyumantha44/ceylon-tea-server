@@ -44,6 +44,47 @@ async function seed(){
     //         password:hashPassword,
     //     }
     // })
+    const team = await prisma.team.createMany({
+        data:
+        [
+            {
+            name:"SUPERVISORS",
+            description:"Supervisors"
+            },
+            {
+            name:"TEA-PLUCKING",
+            description:"Tea Plucking"
+            },
+            {
+            name:"CLEANERS",
+            description:"Cleaners"
+            },
+            {
+            name:"DRIVERS",
+            description:"Drivers"
+            },
+            {
+            name:"SECURITY",
+            description:"Security"
+            },
+            {
+            name:"PROCESSING",
+            description:"Processing"
+            },
+            {
+            name:"PACKAGING",
+            description:"Packaging"
+            },
+            {
+            name:"QUALITY-CONTROL",
+            description:"Quality Control"
+            },
+            {
+            name:"SALES",
+            description:"Sales"
+            }
+        ]
+    })
 }
 
 seed().then(()=>prisma.$disconnect());
