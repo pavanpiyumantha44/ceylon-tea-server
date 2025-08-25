@@ -12,7 +12,7 @@ const app = express()
 const APP_URL = 'https://ceylon-tea-client.vercel.app/'
 
 app.use(cors({
-  origin: APP_URL,
+  origin: 'https://ceylon-tea-client.vercel.app',
   credentials: true,
   methods:['POST','GET','PUT','DELETE']
 }));
