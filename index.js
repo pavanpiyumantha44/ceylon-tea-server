@@ -13,7 +13,8 @@ const APP_URL = 'https://vercel.com/chipher-corders-projects/ceylon-tea-client'
 
 app.use(cors({
   origin: APP_URL,
-  credentials: true
+  credentials: true,
+  methods:['POST','GET','PUT','DELETE']
 }));
 
 app.use(express.json())
