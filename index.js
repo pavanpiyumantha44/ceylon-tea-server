@@ -12,7 +12,7 @@ import stockTransactionsRouter from './routes/stockTransactionsRoute.js'
 const app = express()
 
 //const APP_URL = process.env.APP_URL
-const APP_URL = 'https://ceylon-tea-client.vercel.app/'
+const APP_URL = 'https://ceylon-tea-client.vercel.app'
 
 app.use(cors({
   origin: APP_URL,
