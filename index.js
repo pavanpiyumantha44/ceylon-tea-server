@@ -5,11 +5,14 @@ import authRouter from './routes/authRoute.js';
 import personRouter from './routes/personRoute.js'
 import aiResponseRouter from './routes/aiResponseRoute.js'
 import teamsRouter from './routes/teamRoute.js'
+import placeRouter from './routes/placeRoute.js'
+import stockRouter from './routes/stockRoute.js'
+import stockTransactionsRouter from './routes/stockTransactionsRoute.js'
 
 const app = express()
 
-const APP_URL = process.env.APP_URL
-//const APP_URL = 'https://ceylon-tea-client.vercel.app/'
+//const APP_URL = process.env.APP_URL
+const APP_URL = 'https://ceylon-tea-client.vercel.app/'
 
 app.use(cors({
   origin: APP_URL,
@@ -22,7 +25,10 @@ app.use(express.json())
 app.use('/api/auth',authRouter);
 app.use('/api/person',personRouter);
 app.use('/api/ai',aiResponseRouter);
-app.use('/api/teams',teamsRouter)
+app.use('/api/teams',teamsRouter);
+app.use('/api/places',placeRouter);
+app.use('/api/stock',stockRouter);
+app.use('/api/stockTransactions',stockTransactionsRouter);
 
 const PORT = process.env.PORT || 8080;
 

@@ -2,7 +2,7 @@ import prisma from "../lib/prisma.js";
 
 const addPerson = async(req,res)=>{
     const {firstName,lastName,nicNumber,email,phone,address,gender,roleId,dob} = req.body;
-    if(firstName ==="" || lastName ==="" || nicNumber ==="" || address===""||gender===""||roleId===""||dob===""){
+    if(firstName ==="" || lastName ==="" || nicNumber ==="" || address===""||gender===""||roleId===""){
         return res.status(401).json({success:false,message:"All fields are requried!!"});
     }
     else{   
@@ -12,8 +12,6 @@ const addPerson = async(req,res)=>{
             })
             const personCount = await prisma.person.count();
             const personCode = `${roleName.userRole.substring(0,3)}${personCount+1}`
-            console.log("Person Code "+personCode);
-            console.log(roleName);
 
             if(personCode!==""){
                 const newPerson = await prisma.person.create({
@@ -79,6 +77,60 @@ const getAllPerson =async(req,res)=>{
     }
 }
 
+const getAllSupervisors = async (req, res) => {
+  try {
+    const allSupervisors = await prisma.person.findMany({
+      where: {
+        isDeleted: 'N',
+        role: {
+          userRole: 'SUPERVISOR'
+        }
+      },
+      include: {
+        role: true
+      }
+    });
+    if(allSupervisors){
+         return res.status(200).json({success:true,supervisors:allSupervisors});
+    }else{
+        return res.status(400).json({ success: false, message: "Supervisors not found!" });
+    }
+  } catch (error) {
+    console.error("Error fetching supervisors:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+const getAllworkers = async (req, res) => {
+  try {
+   const allWorkers = await prisma.person.findMany({
+      where: {
+        isDeleted: 'N',
+        NOT: {
+          role: {
+            userRole: {
+              in: ['SUPERVISOR', 'MANAGER','ADMIN'], // Adjust case as per your DB
+              mode: 'insensitive', // optional: ignores case
+            }
+          }
+        }
+      },
+      include: {
+        role: true
+      }
+    });
+    console.log(allWorkers);
+    if(allWorkers){
+         return res.status(200).json({success:true,workers:allWorkers});
+    }else{
+        return res.status(400).json({ success: false, message: "Workers not found!" });
+    }
+  } catch (error) {
+    console.error("Error fetching workers:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 const deletePerson = async(req,res)=>{
     const {id} = req.params;
     try {
@@ -95,4 +147,4 @@ const deletePerson = async(req,res)=>{
         return res.status(500).json({success:false,message:`Failed deleting person!, ${error.message}`})
     }
 }
-export {addPerson, getRoles, getPersonCount, getAllPerson,deletePerson}
+export {addPerson, getRoles, getPersonCount, getAllPerson,deletePerson,getAllSupervisors,getAllworkers}
