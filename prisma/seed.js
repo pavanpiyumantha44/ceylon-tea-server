@@ -13,7 +13,7 @@ async function seed(){
     //         phone:"077678676",
     //         address:"Hatale, Kandy",
     //         gender:"M",
-    //         roleId:"b0347df5-3641-4d07-bfe3-df8cb2dcafd6",
+    //         roleId:"d768cac0-c6f3-43c4-898e-bb9798e96267",
     //     }
     // })
     // const role = await prisma.role.createMany({
@@ -54,7 +54,7 @@ async function seed(){
 
     // const account = await prisma.account.create({
     //     data:{
-    //         personId:"0589ae3e-fcc4-4a2c-bd13-80f5ba8fa89d",
+    //         personId:"561416e6-5653-4fd4-8ba3-354634ad3789",
     //         username:"sysadmin",
     //         password:hashPassword,
     //     }

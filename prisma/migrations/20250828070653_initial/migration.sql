@@ -1,4 +1,7 @@
 -- CreateEnum
+CREATE TYPE "AttendanceStatus" AS ENUM ('PRESENT', 'ABSENT', 'LEAVE', 'HALFDAY');
+
+-- CreateEnum
 CREATE TYPE "TaskStatus" AS ENUM ('ASSIGNED', 'PENDING', 'IN_PROCESS', 'COMPLETED', 'CANCELLED');
 
 -- CreateTable
@@ -50,9 +53,13 @@ CREATE TABLE "account" (
 -- CreateTable
 CREATE TABLE "attendance" (
     "attendance_id" TEXT NOT NULL,
-    "date" TIMESTAMP(3) NOT NULL,
-    "status" TEXT NOT NULL,
-    "personId" TEXT NOT NULL,
+    "start_dttm" TIMESTAMP(3),
+    "end_dttm" TIMESTAMP(3),
+    "status" TEXT,
+    "work_hours" DECIMAL(65,30) NOT NULL,
+    "person_id" TEXT NOT NULL,
+    "person_code" TEXT,
+    "current_date" TIMESTAMP(3) NOT NULL,
     "is_deleted" TEXT NOT NULL DEFAULT 'N',
     "created_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3),
@@ -130,6 +137,7 @@ CREATE TABLE "place" (
     "place_id" TEXT NOT NULL,
     "place_code" TEXT NOT NULL,
     "description" TEXT,
+    "size" DECIMAL(65,30),
     "is_deleted" TEXT NOT NULL DEFAULT 'N',
     "created_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3),
@@ -210,6 +218,7 @@ CREATE TABLE "stock" (
     "name" TEXT NOT NULL,
     "category" TEXT NOT NULL,
     "unit" TEXT NOT NULL,
+    "unit_price" DOUBLE PRECISION NOT NULL,
     "quantity" DOUBLE PRECISION NOT NULL,
     "is_deleted" TEXT NOT NULL DEFAULT 'N',
     "created_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
@@ -221,7 +230,8 @@ CREATE TABLE "stock" (
 -- CreateTable
 CREATE TABLE "stock_transaction" (
     "transaction_id" TEXT NOT NULL,
-    "itemId" TEXT NOT NULL,
+    "item_id" TEXT NOT NULL,
+    "task_id" TEXT,
     "date" TIMESTAMP(3) NOT NULL,
     "type" TEXT NOT NULL,
     "quantity" DOUBLE PRECISION NOT NULL,
@@ -296,7 +306,7 @@ ALTER TABLE "person" ADD CONSTRAINT "person_role_id_fkey" FOREIGN KEY ("role_id"
 ALTER TABLE "account" ADD CONSTRAINT "account_person_id_fkey" FOREIGN KEY ("person_id") REFERENCES "person"("person_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "attendance" ADD CONSTRAINT "attendance_personId_fkey" FOREIGN KEY ("personId") REFERENCES "person"("person_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "attendance" ADD CONSTRAINT "attendance_person_id_fkey" FOREIGN KEY ("person_id") REFERENCES "person"("person_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "salary" ADD CONSTRAINT "salary_personId_fkey" FOREIGN KEY ("personId") REFERENCES "person"("person_id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -338,7 +348,7 @@ ALTER TABLE "vehicle_usage" ADD CONSTRAINT "vehicle_usage_vehilce_id_fkey" FOREI
 ALTER TABLE "vehicle_usage" ADD CONSTRAINT "vehicle_usage_driver_id_fkey" FOREIGN KEY ("driver_id") REFERENCES "person"("person_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "stock_transaction" ADD CONSTRAINT "stock_transaction_itemId_fkey" FOREIGN KEY ("itemId") REFERENCES "stock"("item_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "stock_transaction" ADD CONSTRAINT "stock_transaction_item_id_fkey" FOREIGN KEY ("item_id") REFERENCES "stock"("item_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "incident" ADD CONSTRAINT "incident_reported_by_fkey" FOREIGN KEY ("reported_by") REFERENCES "person"("person_id") ON DELETE RESTRICT ON UPDATE CASCADE;

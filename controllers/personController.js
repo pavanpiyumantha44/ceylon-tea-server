@@ -64,9 +64,21 @@ const getRoles = async(req,res)=>{
 const getAllPerson =async(req,res)=>{
     try {
         const allPerson = await prisma.person.findMany({
-            where:{isDeleted:'N'},
+            where:{
+                isDeleted:'N',
+                role: {
+                    NOT: {
+                        userRole: 'ADMIN'
+                    }
+                }
+            },
             include:{
-                role:true
+                role:true,
+                teamMemberships:{
+                    include:{
+                        team:true
+                    }
+                }
             }
         });
         if(allPerson.length>0){
@@ -147,4 +159,30 @@ const deletePerson = async(req,res)=>{
         return res.status(500).json({success:false,message:`Failed deleting person!, ${error.message}`})
     }
 }
-export {addPerson, getRoles, getPersonCount, getAllPerson,deletePerson,getAllSupervisors,getAllworkers}
+
+const getAllTeaPluckers = async (req, res) => {
+  try {
+    const allTeaPluckers = await prisma.person.findMany({
+      where: {
+        isDeleted: 'N',
+        role: {
+          userRole: "TEA-PLUCKER"
+        }
+      },
+      include: {
+        role: true
+      }
+    });
+
+    if (allTeaPluckers && allTeaPluckers.length > 0) {
+      return res.status(200).json({ success: true, workers: allTeaPluckers });
+    } else {
+      return res.status(404).json({ success: false, message: "Workers not found!" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error"+error.message });
+  }
+};
+
+
+export {addPerson, getRoles, getPersonCount, getAllPerson,deletePerson,getAllSupervisors,getAllworkers,getAllTeaPluckers}

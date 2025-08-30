@@ -13,7 +13,7 @@ model Person{
   firstName String @map("first_name")
   lastName String @map("last_name")
   nicNumber String @unique @map("nic_number")
-  email String? @unique 
+  email String?
   phone String?
   address String?
   gender String?
@@ -68,10 +68,13 @@ model Account{
 
 model Attendance {
   attendanceId String   @id @default(uuid()) @map("attendance_id")
-  start_dattm      DateTime?
-  end_dttm    DateTime?
-  status    AttendanceStatus
-  personId String
+  startDttm      DateTime? @map("start_dttm")
+  endDttm    DateTime? @map("end_dttm")
+  status    String?
+  workHours   Decimal @map("work_hours")
+  personId String     @map("person_id")
+  personCode String?  @map("person_code")
+  currentDate DateTime @map("current_date")
   isDeleted String @default("N") @map("is_deleted")
   createdAt DateTime? @default(now()) @map("created_at")
   updatedAt DateTime? @map("updated_at")
@@ -84,6 +87,7 @@ enum AttendanceStatus {
   PRESENT
   ABSENT
   LEAVE
+  HALFDAY
 }
 
 model Salary {
