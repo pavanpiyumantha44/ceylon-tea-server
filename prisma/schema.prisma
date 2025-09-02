@@ -136,18 +136,20 @@ model MedicalEmergency {
 
 model Task {
   taskId        String   @id @default(uuid()) @map("task_id")
+  taskCode      Int @unique @default(autoincrement()) @map("task_code")
   taskName      String   @map("task_name")
   description   String
   taskType      String   @map("task_type")
   taskStatus    TaskStatus @default(PENDING) @map("task_status")
   startDateTime DateTime @map("start_date_time")
   endDateTime   DateTime? @map("end_date_time")
+  additionalNotes String? @map("additional_notes")
   
 
   createdBy             String @map("created_by")
   assignedSupervisor    String @map("assigned_supervisor")
-  teamId                String @map("team_id")
-  workerId              String @map("worker_id")
+  teamId                String? @map("team_id")
+  workerId              String? @map("worker_id")
   placeId               String @map("place_id")
   isDeleted String @default("N") @map("is_deleted")
 
@@ -156,8 +158,8 @@ model Task {
 
   creator         Person @relation("CreatedTasks", fields: [createdBy], references: [personId])
   supervisor      Person @relation("SupervisedTasks", fields: [assignedSupervisor], references: [personId])
-  worker          Person @relation("WorkerTasks", fields: [workerId], references: [personId])
-  assignedTeam    Team   @relation(fields: [teamId], references: [teamId])
+  worker          Person? @relation("WorkerTasks", fields: [workerId], references: [personId])
+  assignedTeam    Team?   @relation(fields: [teamId], references: [teamId])
   taskPlace       Place @relation(fields: [placeId], references: [placeId])
   @@map("task")
 }

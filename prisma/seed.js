@@ -50,23 +50,30 @@ async function seed(){
     //         }
     //     ]
     // })
-    // const hashPassword = await bcrypt.hash("admin@123",10);
+    const hashPassword = await bcrypt.hash("man@123",10);
 
+    const account = await prisma.account.create({
+        data:{
+            personId:"561416e6-5653-4fd4-8ba3-354634ad3789",
+            username:"sysadmin",
+            password:hashPassword,
+        }
+    })
     // const account = await prisma.account.create({
     //     data:{
-    //         personId:"561416e6-5653-4fd4-8ba3-354634ad3789",
-    //         username:"sysadmin",
+    //         personId:"d1daf799-7d5c-416e-95ea-7c2c4f467059",
+    //         username:"man@123",
     //         password:hashPassword,
     //     }
     // })
     // const stockTransaction = await prisma.stockTransaction.create({
     //     data:{
-    //         itemId:"f308ce7e-4568-4d4b-91e7-32a79458bab2",
-    //         taskId:"1",
+    //         itemId:"f969d4ff-2716-4535-8edd-09f77bf4a490",
+    //         taskId:"11",
     //         date:new Date(),
     //         type:"TOOL",
     //         quantity:3,
-    //         reference:"For cleaning"
+    //         reference:"Clean A21 Tea Area"
     //     }
     // })
     // const team = await prisma.team.createMany({

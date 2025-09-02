@@ -11,11 +11,20 @@ const verifyToken = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded; // attach user info to request object
+    req.user = decoded;
     next();
   } catch (err) {
     return res.status(403).json({ message: 'Invalid or expired token' });
   }
+};
+
+export const authorizeRoles = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return res.status(403).json({ message: 'Forbidden: Access denied' });
+    }
+    next();
+  };
 };
 
 export default verifyToken;

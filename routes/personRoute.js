@@ -1,14 +1,15 @@
 import express from 'express'
 import { addPerson, getRoles, getPersonCount, getAllPerson, deletePerson,getAllSupervisors,getAllworkers,getAllTeaPluckers } from '../controllers/personController.js';
+import verifyToken from '../middlewares/authMiddleware.js';
 const router = express.Router();
 
-router.post('/add',addPerson);
-router.get('/getRoles',getRoles);
-router.get('/getAllSupervisors',getAllSupervisors);
-router.get('/getPersonCount',getPersonCount);
-router.get('/getAllPerson',getAllPerson);
-router.get('/getAllTeaPluckers',getAllTeaPluckers);
-router.get('/getAllWorkers',getAllworkers);
-router.delete('/deletePerson/:id',deletePerson);
+router.post('/add',verifyToken,addPerson);
+router.get('/getRoles',verifyToken,getRoles);
+router.get('/getAllSupervisors',verifyToken,getAllSupervisors);
+router.get('/getPersonCount',verifyToken,getPersonCount);
+router.get('/getAllPerson',verifyToken,getAllPerson);
+router.get('/getAllTeaPluckers',verifyToken,getAllTeaPluckers);
+router.get('/getAllWorkers',verifyToken,getAllworkers);
+router.delete('/deletePerson/:id',verifyToken,deletePerson);
 
 export default router;
